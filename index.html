@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My AR Video Frame</title>
+    <!-- A-Frame Library -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <!-- AR.js Library -->
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body, html { margin: 0; overflow: hidden; }
+      video { display: none; } /* Hide the video player */
+    </style>
+  </head>
+
+  <body>
+    <!-- AR Scene -->
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      
+      <!-- The Marker -->
+      <a-marker type="pattern" url="marker.patt">
+        
+        <!-- Video Plane -->
+        <a-video 
+          src="#myVideo" 
+          width="2" height="1" 
+          position="0 0 0" 
+          rotation="-90 0 0">
+        </a-video>
+
+      </a-marker>
+
+      <!-- Camera -->
+      <a-entity camera></a-entity>
+    </a-scene>
+
+    <!-- The Video -->
+    <video id="myVideo" loop="true" playsinline webkit-playsinline>
+      <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <!-- Play & Pause Script -->
+    <script>
+      const video = document.querySelector("#myVideo");
+      const marker = document.querySelector("a-marker");
+
+      marker.addEventListener("markerFound", () => {
+        video.play(); // Play video when marker found
+      });
+
+      marker.addEventListener("markerLost", () => {
+        video.pause(); // Pause video when marker lost
+      });
+    </script>
+  </body>
+</html>
